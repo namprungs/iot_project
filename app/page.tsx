@@ -18,35 +18,31 @@ export default function Dashboard() {
     humidity: []
   });
 
-  // Simulate real-time data updates
+  // Fetch real-time data from InfluxDB via API
   useEffect(() => {
-    // In a real app, you would listen to Firebase here:
-    // const starCountRef = ref(database, 'indoor/environment_log');
-    // onValue(starCountRef, (snapshot) => {
-    //   const data = snapshot.val();
-    //   // Process data for chart...
-    // });
+    const fetchData = async () => {
+      try {
+        const res = await fetch('/api/environment');
+        const data = await res.json();
 
-    const interval = setInterval(() => {
-      const now = new Date();
-      const timeLabel = now.toLocaleTimeString();
+        if (Array.isArray(data)) {
+          const labels = data.map((d: any) => new Date(d.time).toLocaleTimeString());
+          const temperature = data.map((d: any) => d.temperature);
+          const humidity = data.map((d: any) => d.humidity);
 
-      // Simulate sensor readings
-      const newTemp = 25 + Math.random() * 2 - 1; // 24-26 degrees
-      const newHum = 60 + Math.random() * 5 - 2.5; // 57.5-62.5 %
+          setChartData({
+            labels,
+            temperature,
+            humidity
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-      setChartData(prev => {
-        const newLabels = [...prev.labels, timeLabel].slice(-10); // Keep last 10 points
-        const newTemps = [...prev.temperature, newTemp].slice(-10);
-        const newHums = [...prev.humidity, newHum].slice(-10);
-
-        return {
-          labels: newLabels,
-          temperature: newTemps,
-          humidity: newHums
-        };
-      });
-    }, 2000); // Update every 2 seconds
+    fetchData(); // Initial fetch
+    const interval = setInterval(fetchData, 5000); // Poll every 5 seconds
 
     return () => clearInterval(interval);
   }, []);
