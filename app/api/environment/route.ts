@@ -13,7 +13,7 @@ export async function GET() {
   `;
 
   try {
-    const rows: any[] = [];
+    const rows: { time: string; temperature: number; humidity: number }[] = [];
 
     await new Promise<void>((resolve, reject) => {
       queryApi.queryRows(query, {

@@ -4,13 +4,17 @@ import { getDatabase } from "firebase/database";
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/setup#config-object
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyA3Fcsadw_xx637HBqNxlfWpl0XWMc46I8",
+  authDomain: "iot-project-cae37.firebaseapp.com",
+  projectId: "iot-project-cae37",
+  storageBucket: "iot-project-cae37.firebasestorage.app",
+  messagingSenderId: "810885132322",
+  appId: "1:810885132322:web:a91586075518ed3fcd9a7b",
+  measurementId: "G-HTFC2F5XHG",
+  // RTDB needs the regional databaseURL otherwise writes fall back to US and never reach your instance.
+  databaseURL:
+    process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL ??
+    "https://iot-project-cae37-default-rtdb.asia-southeast1.firebasedatabase.app"
 };
 
 // Initialize Firebase
